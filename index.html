@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js" defer></script>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="inputs">
+      <input type="text" class="history" readonly>
+      <input type="tel" class="calculating" value="0" readonly>
+    </div>
+    <div class="btns">
+      <button class="btn-init" data-type="reset">C</button>
+      <button class="btn-num" data-type="0">0</button>
+      <button class="btn-num" data-type="1">1</button>
+      <button class="btn-num" data-type="2">2</button>
+      <button class="btn-num" data-type="3">3</button>
+      <button class="btn-num" data-type="4">4</button>
+      <button class="btn-num" data-type="5">5</button>
+      <button class="btn-num" data-type="6">6</button>
+      <button class="btn-num" data-type="7">7</button>
+      <button class="btn-num" data-type="8">8</button>
+      <button class="btn-num" data-type="9">9</button>
+      <button class="btn-operator" data-type="/">/</button>
+      <button class="btn-operator" data-type="*">*</button>
+      <button class="btn-operator" data-type="-">-</button>
+      <button class="btn-operator" data-type="+">+</button>
+      <button class="btn-equal" data-type="equal">=</button>
+    </div>
+  </div>
+
+</body>
+</html>
