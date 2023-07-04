@@ -11,24 +11,21 @@ btns.addEventListener('click', (e) => {
     inputCalc.value = 0;
     inputHistory.value = '';
   } else if(e.target.dataset.type === 'equal') {
-    if(inputCalc.value == 0) return;
-    if(operator) {
-      let resulte = inputCalc.value.split(operator);
-      if (Number(resulte[1])) {
-        inputCalc.value = calculate(Number(resulte[0]), Number(resulte[1]), operator);
-        inputHistory.value += '=';
-      } else {
-        inputCalc.value = calculate(Number(resulte[0]), Number(resulte[0]), operator);
-        inputHistory.value += `${Number(resulte[0])}=`;
-      }
-      operator = null;
+    if(!operator) return;
+    let resulte = inputCalc.value.split(operator);
+    if (Number(resulte[1])) {
+      inputCalc.value = calculate(Number(resulte[0]), Number(resulte[1]), operator);
+      inputHistory.value += '=';
+    } else {
+      inputCalc.value = calculate(Number(resulte[0]), Number(resulte[0]), operator);
+      inputHistory.value += `${Number(resulte[0])}=`;
     }
+    operator = null;
   } else {
     if(inputCalc.value == 0 && e.target.classList.contains('btn-operator')) return;
     if(inputCalc.value == 0) inputCalc.value = '';
     if(e.target.classList.contains('btn-operator')) {
       if(operator) {
-        console.log(operator);
         inputCalc.value = inputCalc.value.replace(operator, e.target.dataset.type);
         operator = e.target.dataset.type;
         inputHistory.value = inputCalc.value;
