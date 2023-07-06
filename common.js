@@ -3,42 +3,37 @@ const inputCalc = document.querySelector('.calculating');
 const btns = document.querySelector('.btns');
 
 let operator = null;
-
-btns.addEventListener('click', (e) => {
-  if(e.target.tagName !== 'BUTTON') return;
-  if(e.target.dataset.type === 'reset') {
-    operator = null;
-    inputCalc.value = 0;
-    inputHistory.value = '';
-  } else if(e.target.dataset.type === 'equal') {
+const getMapKey = {
+  reset: () => {
+    resetCalculator();
+  },
+  equal: () => {
     if(!operator) return;
     let resulte = inputCalc.value.split(operator);
-    if (Number(resulte[1])) {
-      inputCalc.value = calculate(Number(resulte[0]), Number(resulte[1]), operator);
-      inputHistory.value += '=';
-    } else {
-      inputCalc.value = calculate(Number(resulte[0]), Number(resulte[0]), operator);
-      inputHistory.value += `${Number(resulte[0])}=`;
-    }
+    inputCalc.value = calculate(Number(resulte[0]), Number(resulte[1]) ?  Number(resulte[1]) :  Number(resulte[0]), operator);
+    inputHistory.value += `${Number(resulte[1]) ?  '' :  Number(resulte[0])}=`;
     operator = null;
-  } else {
-    if(inputCalc.value == 0 && e.target.classList.contains('btn-operator')) return;
+  },
+  operator: (target) => {
+    if(inputCalc.value == 0) return;
+    operator ? inputCalc.value = inputCalc.value.replace(operator, target.dataset.operator) : inputCalc.value += target.dataset.operator;
+    inputHistory.value = inputCalc.value;
+    operator = target.dataset.operator;
+  },
+  number: (target) => {
     if(inputCalc.value == 0) inputCalc.value = '';
-    if(e.target.classList.contains('btn-operator')) {
-      if(operator) {
-        inputCalc.value = inputCalc.value.replace(operator, e.target.dataset.type);
-        operator = e.target.dataset.type;
-        inputHistory.value = inputCalc.value;
-        return false;
-      }
-      operator = e.target.dataset.type;
-    } 
-    inputCalc.value += e.target.dataset.type;
+    inputCalc.value += target.dataset.number;
     if(operator) {
       inputHistory.value = inputCalc.value;
     }
   }
-});
+}
+
+function resetCalculator() {
+  operator = null;
+  inputCalc.value = 0;
+  inputHistory.value = '';
+}
 
 function calculate(num1, num2, operator) {
   switch (operator) {
@@ -54,3 +49,12 @@ function calculate(num1, num2, operator) {
       break;
   }
 }
+
+btns.addEventListener('click', (e) => {
+  const target = e.target;
+  const targetType = target.dataset.type;
+  if(target.tagName !== 'BUTTON') return;
+
+  getMapKey[targetType](target);
+});
+
