@@ -2,40 +2,53 @@ const inputHistory = document.querySelector('.history');
 const inputCalc = document.querySelector('.calculating');
 const btns = document.querySelector('.btns');
 
-let operator = null;
+const state = {
+  firstNumber: '',
+  secondNumber: '',
+  operator: null,
+};
 
 function resetCalculator() {
-  operator = null;
+  state.firstNumber = '';
+  state.secondNumber = '';
+  state.operator = null;
   inputCalc.value = 0;
   inputHistory.value = '';
 }
 
 function equalCalculator() {
-  if (!operator) return;
-  const result = inputCalc.value.split(operator);
-  const resultFirst = +result[0];
-  const resultSecond = +result[1];
-  inputCalc.value = calculate(resultFirst, resultSecond ? resultSecond : resultFirst, operator);
-  inputHistory.value += resultSecond ? '=' : `${resultFirst}=`;
-  operator = null;
+  if (!state.operator) return;
+
+  const hasSecondNumbOrZero = Boolean(state.secondNumber) || state.secondNumber == 0;
+
+  inputCalc.value = calculate(+state.firstNumber, hasSecondNumbOrZero ? +state.secondNumber : +state.firstNumber, state.operator);
+  inputHistory.value += hasSecondNumbOrZero ? '=' : `${state.firstNumber}=`;
+
+  state.firstNumber = inputCalc.value;
+  state.secondNumber = '';
+  state.operator = null;
 }
 
 function operatorCalculator(newOperator) {
   if (inputCalc.value == 0) return;
-  if (operator) {
-    inputCalc.value = inputCalc.value.replace(operator, newOperator);
+  if (state.operator) {
+    inputCalc.value = inputCalc.value.replace(state.operator, newOperator);
   } else {
     inputCalc.value += newOperator;
   }
   inputHistory.value = inputCalc.value;
-  operator = newOperator;
+  state.operator = newOperator;
 }
 
 function numberCalculator(number) {
   if (inputCalc.value == 0) inputCalc.value = '';
+  if (state.secondNumber === '0' && number == 0) return;
   inputCalc.value += number;
-  if (operator) {
+  if (state.operator) {
     inputHistory.value = inputCalc.value;
+    state.secondNumber += number;
+  } else {
+    state.firstNumber += number;
   }
 }
 
